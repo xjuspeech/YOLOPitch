@@ -31,27 +31,7 @@ def get_frame_1(wav_file,step_size = 32):
     frames = torch.from_numpy(frames)
     return frames
 
-# def frames(wav_path,model_srate = 16000,step_size = 128*3 / 44100 * 1000):
-#     sample_rate, audio = wavfile.read(wav_path)  # 读取音频文件，返回采样率 和 信号
-#     audio = audio.astype(np.float32)
 
-#     #使输入帧的跳长为10ms
-#     hop_length = int(sample_rate * step_size / 1000)  #160
-#     wlen = int(sample_rate * 0.064)
-#     n_frames = 1 + int((len(audio) - wlen) / hop_length)
-#     frames = as_strided(audio, shape=(wlen, n_frames),
-#                         strides=(audio.itemsize, hop_length * audio.itemsize))
-#     frames = frames.transpose().copy()
-#     #标准化每个帧（这是模型期望的）
-#     # print(frames.shape)
-#     #z-score归一化
-#     frames -= np.mean(frames, axis=1)[:, np.newaxis]
-#     frames /= np.std(frames, axis=1)[:, np.newaxis]
-#     frames[np.isnan(frames)] = 0
-
-#     ret = librosa.resample(y=frames, res_type='linear', orig_sr=sample_rate, target_sr=model_srate)
-#     ret = torch.tensor(ret)
-#     return ret
 
 def frames(wav_path,model_srate = 16000,step_size = 128*3 / 44100):
     sample_rate, audio = wavfile.read(wav_path)  # 读取音频文件，返回采样率 和 信号
