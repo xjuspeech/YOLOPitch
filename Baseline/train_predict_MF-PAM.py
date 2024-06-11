@@ -6,8 +6,8 @@ import librosa
 import os
 import re
 import sys
-# from dataset_org import Net_DataSet
-from dataset_wav_noise import Net_DataSet
+from dataset_org import Net_DataSet
+# from dataset_wav_noise import Net_DataSet
 from tqdm import tqdm
 from PNP import Estimation_stage
 from formula_all import *
@@ -117,7 +117,6 @@ def validation(dataloader, model, loss_fn,csv_path=validation_csv_path):
             # X = X.transpose(1,2).unsqueeze(0)
             X = X.transpose(-1,-2)
             X, y = X.to(device), y.to(device).squeeze(0)
-            # X = CMNDF(X,512)
             pred = model(X).squeeze(0)
             test_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
@@ -190,12 +189,12 @@ def validation(dataloader, model, loss_fn,csv_path=validation_csv_path):
     sound_score_avg = np.nanmean(sound_score_numpy,axis = 0)
     music_score_avg = np.sum(music_score_numpy,axis = 0) / music_score_numpy.shape[0]
     
-    print("score结果:")
+    print("score:")
     print("sound_score_avg:",sound_score_avg)
     print('music_score_avg:',music_score_avg)
     log.info(f"Validation Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
     log.info(f"voice_correct: \n voice_Accuracy: {(100*voice_correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
-    log.info(f"score结果:")
+    log.info(f"score:")
     log.info(f"sound_score_avg:{sound_score_avg}")
     log.info(f"music_score_avg:,{music_score_avg}")
 
