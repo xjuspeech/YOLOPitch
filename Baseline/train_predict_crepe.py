@@ -7,12 +7,8 @@ import os
 import re
 import sys
 from dataset_org import Net_DataSet
-# from dataset_stft_noise import Net_DataSet
 from tqdm import tqdm
-# from cmndf_fc_unet import YIN
-# from cnn_unet_cmndf_self_11 import YIN
 from crepe import Crepe
-# from crepe_fdc_freq import Crepe
 from formula_all import *
 import time
 import logging
@@ -79,15 +75,14 @@ def get_label(path):
     return pitch,ref_cent
 
 def train(dataloader,model,loss_fn,optimizer):
-    size = len(dataloader.dataset) #dataloader.dataset 即取出train_dataloader的train_data内容
+    size = len(dataloader.dataset) 
     model.train()
 
     for batch, (X, y) in enumerate(tqdm(dataloader)):
         y = y[0].type(torch.LongTensor)
         # X = X.transpose(1,2).unsqueeze(0)
         X, y = X.to(device), y.to(device).squeeze(0)
-        # Compute prediction error
-        # X = CMNDF(X,512)
+
         pred = model(X)
 
         loss = loss_fn(pred, y)
@@ -99,7 +94,7 @@ def train(dataloader,model,loss_fn,optimizer):
 
         if batch % 100 == 0:
             loss, current = loss.item(), batch * len(X)
-            #查看运行进度
+
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
 
@@ -191,12 +186,12 @@ def validation(dataloader, model, loss_fn,csv_path=validation_csv_path):
     sound_score_avg = np.nanmean(sound_score_numpy,axis = 0)
     music_score_avg = np.sum(music_score_numpy,axis = 0) / music_score_numpy.shape[0]
     
-    print("score结果:")
+    print("score:")
     print("sound_score_avg:",sound_score_avg)
     print('music_score_avg:',music_score_avg)
     log.info(f"Validation Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
     log.info(f"voice_correct: \n voice_Accuracy: {(100*voice_correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
-    log.info(f"score结果:")
+    log.info(f"score:")
     log.info(f"sound_score_avg:{sound_score_avg}")
     log.info(f"music_score_avg:,{music_score_avg}")
 
