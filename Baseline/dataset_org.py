@@ -10,7 +10,7 @@ from scipy.io import wavfile
 import config
 
 def get_frames(abs_wav_path,model_srate=16000,step_size= 0.02,len_frame_time=0.064):
-    sample_rate, audio = wavfile.read(abs_wav_path)  # 读取音频文件，返回采样率 和 信号
+    sample_rate, audio = wavfile.read(abs_wav_path) 
     audio = audio.astype(np.float32)
     
     #分帧
@@ -53,10 +53,8 @@ class Net_DataSet(Dataset):
             pv_name = filename.replace("txt","csv")
         wavname = filename.replace("txt","wav")
         # pv_name = filename.replace("txt","pv")
-        # print(wavname)
         wav_path = config.wav_dir_path + '/' + wavname
-        # wav_path = config.noise_wav_dir_path + '/' + wavname 
-        # wav_path = '/home/lxf521/data/ikala/data/mono/mono' + '/' + wavname
+
         frames = get_frames(wav_path,step_size=config.hop_size)
         # print(filename)
         label = every_file.strip().split()[1:]
